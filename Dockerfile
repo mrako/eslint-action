@@ -1,4 +1,4 @@
-FROM node:10.14.1-alpine
+FROM node:alpine
 
 COPY .eslintrc.template.json /.eslintrc.json
 COPY entrypoint.sh /entrypoint.sh
