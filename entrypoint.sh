@@ -1,7 +1,9 @@
 #!/bin/sh
 
 # Exit if any subcommand fails
-set -e 
+set -e
+
+options=""
 
 # Setup node modules if needed
 if [ -e node_modules/.bin/eslint ]; then
@@ -10,13 +12,18 @@ else
     echo "## Your environment is not ready yet. Installing modules..."
     if [ -f yarn.lock ]; then
         setup="yarn --non-interactive --silent --ignore-scripts --production=false &&"
+    elif [ -f package-lock.json ]; then
+        setup="NODE_ENV=development npm ci --ignore-scripts &&"
+    elif [ -f package.json ]; then
+        setup="NODE_ENV=development npm install --no-package-lock --ignore-scripts &&"
     else
-        if [ -f package-lock.json ]; then
-            setup="NODE_ENV=development npm ci --ignore-scripts &&"
-        else
-            setup="NODE_ENV=development npm install --no-package-lock --ignore-scripts &&"
-        fi
+        setup="NODE_ENV=development npm install eslint babel-eslint &&"
+        sh -c "/.eslintrc.template ./.eslintrc"
     fi
+fi
+
+if [ -e .eslint* ]; then
+    sh -c "/.eslintrc.template ./.eslintrc"
 fi
 
 if [ -z "$1" ]; then
