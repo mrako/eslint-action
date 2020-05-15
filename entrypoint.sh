@@ -18,12 +18,11 @@ else
         setup="NODE_ENV=development npm install --no-package-lock --ignore-scripts &&"
     else
         setup="NODE_ENV=development npm install eslint babel-eslint &&"
-        sh -c "/.eslintrc.template ./.eslintrc"
     fi
 fi
 
 if [ -e .eslint* ]; then
-    sh -c "/.eslintrc.template ./.eslintrc"
+    sh -c "cp /.eslintrc.json ./.eslintrc.json"
 fi
 
 if [ -z "$1" ]; then
